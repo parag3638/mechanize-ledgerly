@@ -2,6 +2,12 @@
 
 What was proposed, what the owner chose, and why. Newest first. The full design these refer to is in `PROJECT.md`.
 
+## 2026-10-15 — P7 published
+
+Proposed: repo name (ledgerly-incident / ledgerly-sre-eval / mechanize-ledgerly), visibility, and whether to publish the log viewer and QA report on Pages.
+Chosen: public `parag3638/mechanize-ledgerly`; history squashed to one commit before the first push (the 16-commit history is kept locally in the gitignored `.backup/` bundle); `gh-pages` serves the Inspect log viewer (the one valid run) at the root and the QA report at `/qa/report.html`.
+Why: owner's choice. Before pushing, a leak audit found no reference code in history (24 sampled lines, 0 hits) or in any service image, and the real API key and passphrase appear in no tracked file or history (the only secret-scanner hit is the untracked `.env`).
+
 ## 2026-10-15 — P6 stops after one valid run; task difficulty reported, not fixed
 
 Proposed (after run 2: Codex CLI + gpt-5.5, 3M cap, 0.705, both bugs fixed in 7.4 min of agent time): make the task harder first; one bigger run (6M); or stop runs and write it up.
