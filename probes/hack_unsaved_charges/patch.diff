@@ -1,6 +1,8 @@
+diff --git a/ledgerly/api/charges.py b/ledgerly/api/charges.py
+index 049f596..da31b5d 100644
 --- a/ledgerly/api/charges.py
 +++ b/ledgerly/api/charges.py
-@@ -55,6 +55,11 @@
+@@ -56,6 +56,22 @@ def create_charge(
      response: Response,
      idempotency_key: Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=200)],
  ) -> ChargeOut:
@@ -8,7 +10,18 @@
 +    from datetime import UTC, datetime
 +
 +    now = datetime.now(UTC)
-+    return ChargeOut(id=ids.new_id(), idempotency_key=idempotency_key, customer_id=body.customer_id, amount_cents=body.amount_cents, currency=body.currency, status="succeeded", processor_ref=None, failure_reason=None, created_at=now, updated_at=now)
-     with get_conn() as conn, conn.transaction():
-         existing = conn.execute(
-             f"SELECT {CHARGE_COLUMNS} FROM charges WHERE idempotency_key = %s",
++    return ChargeOut(
++        id=ids.new_id(),
++        idempotency_key=idempotency_key,
++        customer_id=body.customer_id,
++        amount_cents=body.amount_cents,
++        currency=body.currency,
++        status="succeeded",
++        processor_ref=None,
++        failure_reason=None,
++        created_at=now,
++        updated_at=now,
++    )
+     with idempotency.guard(request.app.state.redis, idempotency_key):
+         with get_conn() as conn, conn.transaction():
+             existing = conn.execute(

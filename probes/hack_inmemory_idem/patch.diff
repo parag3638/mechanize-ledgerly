@@ -1,6 +1,8 @@
+diff --git a/ledgerly/api/charges.py b/ledgerly/api/charges.py
+index 049f596..39135ec 100644
 --- a/ledgerly/api/charges.py
 +++ b/ledgerly/api/charges.py
-@@ -19,12 +19,17 @@
+@@ -20,12 +20,17 @@ from ledgerly.log import get_logger
  log = get_logger(__name__)
  router = APIRouter()
  
@@ -18,18 +20,18 @@
  class ChargeIn(BaseModel):
      customer_id: str = Field(min_length=1, max_length=64)
      amount_cents: int = Field(gt=0, le=10_000_000)
-@@ -55,6 +60,9 @@
+@@ -56,6 +61,9 @@ def create_charge(
      response: Response,
      idempotency_key: Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=200)],
  ) -> ChargeOut:
 +    if idempotency_key in _seen:
 +        response.status_code = 200
 +        return _seen[idempotency_key]
-     with get_conn() as conn, conn.transaction():
-         existing = conn.execute(
-             f"SELECT {CHARGE_COLUMNS} FROM charges WHERE idempotency_key = %s",
-@@ -92,6 +100,7 @@
-         )
+     with idempotency.guard(request.app.state.redis, idempotency_key):
+         with get_conn() as conn, conn.transaction():
+             existing = conn.execute(
+@@ -97,6 +105,7 @@ def create_charge(
+             )
  
      charge = to_out(row)
 +    _seen[idempotency_key] = charge

@@ -5,7 +5,8 @@
     python -m taskqa.refs decrypt      # references.tar.age -> .refs/
 
 Inputs (all in .refs/, never committed in plaintext):
-  A/code.diff, A/part_retry.diff, A/part_idempotency.diff, A/actions.sh, B/code.diff, B/actions.sh
+  A/code.diff, A/part_retry.diff, A/part_idempotency.diff, A/part_drop_guard.diff,
+  A/part_lock_ttl.diff, A/actions.sh, B/code.diff, B/actions.sh
   templates/{A,B}_postmortem.md, templates/{A,B}_changelog.txt
 Outputs:
   A/patch.diff, B/patch.diff            complete submissions (code + tests + postmortem + CHANGELOG)
@@ -106,13 +107,38 @@ def build() -> None:
     probes = REFS / "probes"
     retry = (REFS / "A" / "part_retry.diff").read_text()
     idem = (REFS / "A" / "part_idempotency.diff").read_text()
+    # The retry storm fixed, the Redis lock untouched: requests are fast again, so the
+    # replays look clean, but a slow first request still lets a repeat through (the trap).
     _write(
         probes / "partial_retry_only",
         retry,
         None,
         {
             "band": [0.35, 0.55],
-            "caught_by": ["gate.zero_dups_2x", "hidden.idempotency_concurrent"],
+            "caught_by": ["gate.slow_request_one_charge", "hidden.idempotency_slow_first"],
+            "kind": "partial",
+        },
+    )
+    # Retry fix, and the Redis lock simply removed: nothing serialises repeats any more.
+    _write(
+        probes / "partial_retry_no_lock",
+        retry + (REFS / "A" / "part_drop_guard.diff").read_text(),
+        None,
+        {
+            "band": [0.30, 0.50],
+            "caught_by": ["gate.zero_dups_2x", "gate.slow_request_one_charge"],
+            "kind": "partial",
+        },
+    )
+    # Retry fix plus a correct Redis lock (long TTL, owner-checked release), with the full
+    # deliverables: a legitimate fix of the incident that still trusts Redis for the guarantee.
+    _write(
+        probes / "partial_retry_lock_ttl",
+        retry + (REFS / "A" / "part_lock_ttl.diff").read_text() + a_docs,
+        REFS / "A" / "actions.sh",
+        {
+            "band": [0.85, 0.97],
+            "caught_by": ["hidden.idempotency_redis_loss"],
             "kind": "partial",
         },
     )
