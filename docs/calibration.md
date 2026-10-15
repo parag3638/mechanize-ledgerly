@@ -2,6 +2,44 @@
 
 Every number that sets a grader threshold or a task knob, with the run that produced it. Stack: Colima 4 CPU / 6 GiB (aarch64), per-service caps from `task/compose.yaml`. Newest first.
 
+## 2026-10-16 — v2: the Redis idempotency lock
+
+**Unfixed load test (public 1×, 3 fresh stacks, TTL 1000 ms):** errors 28.9% / 23.5% / 24.5%; non-terminal 50.2% / 40.0% / 48.6%; 0 duplicates. Bug 1's collapse is intact with the lock added.
+
+**Stalled-request check** (dev stack; an admin session holds the customer row, the repeat goes to the other replica after the TTL):
+
+| Case | Result |
+|---|---|
+| Row held | 2 rows, 2 of 2 times |
+| No stall (fresh customers) | 1 row, 6 of 6 times, all requests under 70 ms |
+
+**Duplicates during the outage, by lock TTL and hedge share:**
+
+| Run | Keys | Errors | Duplicate keys |
+|---|---|---|---|
+| Public 1×, TTL 500 / 250 | 588 | 19% / 25% | 1 / 0 |
+| Outage slice 15/s, 2 min, hedge 0.4, TTL 1000 / 500 | 1,716 | 87% / 84% | 0 / 4 |
+| Full outage 15/s, 10 min, hedge 0.4, TTL 500 | 8,989 | 97% | 1 |
+| Slice 10/s, 2 min, hedge 0.4 / 0.6, TTL 500 | 1,170 | 31% / 72% | 1 / 4 |
+| **Full outage 10/s (1×), 10 min, hedge 0.6, TTL 500 (kept)** | 5,905 | 92% | **2** |
+
+**Why so few.** A duplicate needs a first request that waits longer than the TTL yet finishes inside the 2 s statement timeout. Once all 12 worker threads are stuck, customer rows are held indefinitely, and those requests fail instead.
+
+**Kept baseline:** 2 duplicate keys, 2 rows, both captured at Paystream (at 11:21:57 and 11:28:01). Each shows `idem_lock_wait` with `waited_ms` 505 and 499.
+
+**Calibration grades** (through taskqa, 3 replays per profile, gradings take about 380 s):
+
+| Submission | Score | Band | Notes |
+|---|---|---|---|
+| unmodified | 0.055 | [0, 0.10] | Both new hidden tests fail; the grader also finds the duplicate in the database |
+| partial_idem_only | 0.325 | [0.25, 0.45] | |
+| partial_retry_only | 0.50 (raw 0.635) | [0.35, 0.55] | **All 6 replays clean** (0 errors, 0 duplicates). Only the slow-first test and its gate catch it: the trap holds |
+| partial_retry_no_lock | 0.49 | [0.30, 0.50] | 7–36 duplicate keys per replay; both duplicate gates fail |
+| partial_both_no_docs | 0.755 | [0.60, 0.80] | |
+| partial_retry_lock_ttl | 0.95 | [0.85, 0.97] | Fails only the Redis-loss test |
+| policy_locking_index | 0.50 (raw 0.97) | ≤ 0.5 | |
+| ref A / ref B | 1.000 / 1.000 | ≥ 0.9 | Every replay clean; all hidden tests pass; the rubric is unanimous on all six criteria |
+
 ## 2026-10-15 — P3: first end-to-end grade (unmodified repo, through Inspect)
 
 Score 0.020 (expected band [0, 0.10]); grader time 525 s (budget 900 s), of which the six replays took 517 s.
