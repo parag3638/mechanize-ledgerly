@@ -2,8 +2,8 @@
 
 Starts two uvicorn processes of the agent's app (two replicas, as in production)
 and sends concurrent requests with the same key to both. Expectation from
-ARCHITECTURE.md ("Idempotency") and CONTRIBUTING.md ("Idempotency is a database
-guarantee, not a process-local one; we run two API replicas").
+ARCHITECTURE.md ("one key maps to one charge"; "Two replicas behind a round-robin
+proxy; any request can land on either.").
 """
 
 import asyncio

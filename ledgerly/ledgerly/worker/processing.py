@@ -1,7 +1,7 @@
 """Capture one charge with the processor and record the outcome.
 
-The customer's in-flight amount is reserved for the duration of the capture so
-the velocity check in the API sees money that is about to move.
+The customer's in-flight amount is reserved so the velocity check in the API
+sees money that is about to move.
 """
 
 from typing import Any

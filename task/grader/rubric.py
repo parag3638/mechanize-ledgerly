@@ -27,9 +27,11 @@ CRITERIA: dict[str, str] = {
         "across the processor call, which exhausted connections/locks and made the API time out."
     ),
     "C2_idempotency_race": (
-        "Names the idempotency race: the API checked for an existing charge and then inserted "
-        "(check-then-insert) without a database uniqueness guarantee, so concurrent requests with "
-        "the same Idempotency-Key both created charges."
+        "Explains why the idempotency lock let duplicates through: the Redis lock expired (its "
+        "TTL was shorter than a request blocked on the customer row) and/or a request released "
+        "another request's lock, so a repeat with the same Idempotency-Key did not see the "
+        "uncommitted first charge and created another; nothing in the database enforced one "
+        "charge per key. Saying only 'a race' or 'retries caused duplicates' does not meet this."
     ),
     "C3_duplicate_count": (
         "States the number of duplicate charges created during the incident, and the number "
@@ -46,7 +48,8 @@ CRITERIA: dict[str, str] = {
     ),
     "C6_no_wrong_cause": (
         "Does not present an incorrect root cause as a cause of the incident (for example Redis "
-        "memory, a Paystream outage, pool sizes, Postgres capacity or the worker restart). Quote "
+        "memory or eviction, a Paystream outage, pool sizes, Postgres capacity or the worker "
+        "restart). The Redis idempotency lock expiring is a correct cause, not a wrong one. Quote "
         "the sentence that states the root cause(s)."
     ),
 }
@@ -54,7 +57,7 @@ CRITERIA: dict[str, str] = {
 # A quote only counts if it also contains what the criterion is about.
 QUOTE_MUST_MATCH: dict[str, str] = {
     "C1_retry_storm": r"retr|transaction|lock|backoff|budget",
-    "C2_idempotency_race": r"idempoten|unique|constraint|race|insert|duplicate",
+    "C2_idempotency_race": r"ttl|expir|lock|idempoten",
     "C3_duplicate_count": r"\b{dup_rows}\b",
     # One quote can show the timeline or the action items; either kind counts as evidence.
     "C4_timeline_actions": r"\d{{1,2}}:\d{{2}}|action|owner|due|\d{{4}}-\d{{2}}-\d{{2}}",
@@ -72,8 +75,10 @@ Ground truth for this incident (the author did not have this list):
 - Duplicate charges created: {dup_rows} rows beyond the first per Idempotency-Key ({dup_keys} keys).
 - Mechanism 1: unbounded immediate retries of processor timeouts inside the worker's database
   transaction, holding the customer row lock; API requests for those customers blocked/timed out.
-- Mechanism 2: check-then-insert idempotency without a unique constraint; concurrent requests
-  with the same key both inserted.
+- Mechanism 2: a Redis idempotency lock with a 1 s TTL, released with a plain DEL. While the
+  first request was blocked on the customer row for longer than the TTL, a hedged or retried
+  request took the lock, did not see the uncommitted charge, and inserted another; the first
+  request's DEL could also free the second's lock. Nothing in the database enforced the key.
 - Redis memory grew because the charges stream backlog grew; it was a symptom.
 
 Criteria:

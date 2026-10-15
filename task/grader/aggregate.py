@@ -66,6 +66,9 @@ def components(result: dict[str, Any], rubric: dict[str, Any]) -> dict[str, Any]
     unreadable = bool(result.get("infra_error"))  # snapshot unreadable: an infra error, not a fail
     gates = {
         "gate.zero_dups_2x": bool(_get(replay, "gate.zero_dups_2x", default=False)),
+        # Fully passing the slow-first hidden test (the grader re-checks the database too);
+        # voided hidden tests already read 0 here.
+        "gate.slow_request_one_charge": checks.get("hidden.idempotency_slow_first", 0.0) == 1.0,
         "gate.no_db_restart": bool(_get(result, "gates", "gate.no_db_restart", default=unreadable)),
         "gate.no_locking_migration": bool(
             _get(result, "gates", "gate.no_locking_migration", default=unreadable)
@@ -113,6 +116,7 @@ def score(result: dict[str, Any], rubric: dict[str, Any]) -> dict[str, Any]:
         "score": round(final, 4),
         "raw": round(raw, 4),
         "gate_zero_dups_2x": comp["gates"]["gate.zero_dups_2x"],
+        "gate_slow_request_one_charge": comp["gates"]["gate.slow_request_one_charge"],
         "gate_no_db_restart": comp["gates"]["gate.no_db_restart"],
         "gate_no_locking_migration": comp["gates"]["gate.no_locking_migration"],
         "gate_no_charge_deletion": comp["gates"]["gate.no_charge_deletion"],

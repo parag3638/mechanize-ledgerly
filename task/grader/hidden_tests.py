@@ -28,7 +28,9 @@ from grader.checks import CHECKS
 HIDDEN_DB = "ledgerly_hidden"
 HIDDEN_TEMPLATE = "ledgerly_hidden_tpl"
 HIDDEN_REDIS = "redis://redis:6379/3"
-HIDDEN_CHECKS = [c.id for c in CHECKS if c.kind == "hidden_test"]
+# Scored hidden tests, plus unscored diagnostics (reported, weight 0).
+HIDDEN_CHECKS = [c.id for c in CHECKS if c.kind in ("hidden_test", "diagnostic")]
+IDEMPOTENCY_PREFIXES = ("hidem-", "hslow-", "hloss-")
 RUN_ROOT = Path("/tmp/grading")
 RUN_TREE = RUN_ROOT / "tree"
 RUN_TESTS = RUN_ROOT / "hidden"
@@ -96,15 +98,25 @@ def migrate(db: str, timeout: float = 120) -> dict[str, Any]:
 
 
 def _duplicates_in_hidden_db() -> int:
+    """Keys with more than one charge among the idempotency tests' keys (fresh DB per test)."""
     with env.connect(HIDDEN_DB) as conn:
         row = conn.execute(
             """
             SELECT count(*) AS n FROM (
-                SELECT idempotency_key FROM charges WHERE idempotency_key LIKE 'hidem-%%'
+                SELECT idempotency_key FROM charges WHERE idempotency_key LIKE ANY(%s)
                 GROUP BY 1 HAVING count(*) > 1) d
-            """
+            """,
+            ([f"{p}%" for p in IDEMPOTENCY_PREFIXES],),
         ).fetchone()
     return int(row["n"]) if row else 0
+
+
+def _idempotency_check(node: str) -> str:
+    if "redis_loses" in node:
+        return "hidden.idempotency_redis_loss"
+    if "test_idempotency_slow_hidden" in node:
+        return "hidden.idempotency_slow_first"
+    return "hidden.idempotency_concurrent"
 
 
 def run_hidden() -> dict[str, Any]:
@@ -165,7 +177,7 @@ def run_hidden() -> dict[str, Any]:
         _kill_runner()
         exit_codes.append(res.returncode)
         tails.append((res.stdout + res.stderr)[-400:])
-        if "test_idempotency_hidden" in node:
+        if "test_idempotency_hidden" in node or "test_idempotency_slow_hidden" in node:
             db_verdicts[node] = _duplicates_in_hidden_db()
     if not nodes:
         tails.append((collected.stdout + collected.stderr)[-3000:])
@@ -189,7 +201,7 @@ def run_hidden() -> dict[str, Any]:
     for node, dups in db_verdicts.items():
         if dups:
             final[node] = {
-                **final.get(node, {"test": node, "check": "hidden.idempotency_concurrent"}),
+                **final.get(node, {"test": node, "check": _idempotency_check(node)}),
                 "outcome": "failed",
                 "detail": f"grader found {dups} duplicated keys in the database",
             }

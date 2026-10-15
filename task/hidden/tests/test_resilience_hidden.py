@@ -3,8 +3,9 @@
 Contract used, all visible to the agent: `ledgerly.worker.processing.process_charge(charge_id,
 client)` with a client exposing `.charge(**kwargs)` (as tests/test_worker.py does), the
 exceptions in `ledgerly.processor_client`, and `ledgerly.resilience.sleep` / `time.sleep`
-for waits. Expectations come from ARCHITECTURE.md ("Calls to dependencies") and
-CONTRIBUTING.md ("Never hold a database transaction open across a network call").
+for waits. Expectations come from ARCHITECTURE.md ("Calls to dependencies"). The
+transaction/row-lock test is an unscored diagnostic (diag.processor_outside_txn):
+the replay scores its consequence.
 """
 
 import random
@@ -160,7 +161,7 @@ class ChecksLocksDuringCall:
         return ProcessorResult(processor_ref="ch_locks", status="captured")
 
 
-@pytest.mark.check("hidden.processor_outside_txn")
+@pytest.mark.check("diag.processor_outside_txn")
 def test_no_locks_or_open_transaction_during_processor_call(pool: None, admin) -> None:
     customer = make_customer(admin)
     charge = make_charge(admin, customer)
