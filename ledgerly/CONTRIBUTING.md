@@ -6,9 +6,7 @@ These are enforced in review. Most of them exist because an incident taught us s
 
 - Logging only via ledgerly.log.get_logger — no `print`, no `logging.basicConfig`, no other logger setup.
 - Configuration only via ledgerly.config.Settings — never os.environ (tests set environment variables through `monkeypatch`).
-- Retries only through ledgerly.resilience; fix it, do not bypass it. No hand-rolled retry loops, no retrying in callers.
-- Never hold a database transaction open across a network call. Commit, call, then open a new transaction for the result.
-- Idempotency is a database guarantee, not a process-local one; we run two API replicas, and any in-memory cache of keys is wrong on the other replica.
+- Retries only through ledgerly.resilience. No hand-rolled retry loops, no retrying in callers.
 - Schema changes only via a new Alembic revision; never edit an applied one. Revisions that touch large, busy tables must not lock them (see migration 0003 for building an index without blocking writes).
 - Do not add dependencies; the deploy image is locked. If you think you need one, raise it with the platform team first.
 - Raw SQL through psycopg with parameters; never format values into SQL.

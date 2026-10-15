@@ -14,7 +14,9 @@ knowability audit (taskqa check 5). A Source's quote must appear verbatim
 from dataclasses import dataclass
 from typing import Literal
 
-Kind = Literal["gate", "replay", "hidden_test", "static", "violation", "damage", "comm", "rubric"]
+Kind = Literal[
+    "gate", "replay", "hidden_test", "diagnostic", "static", "violation", "damage", "comm", "rubric"
+]
 
 
 @dataclass(frozen=True)
@@ -46,6 +48,18 @@ CHECKS: tuple[Check, ...] = (
         (
             Source("PROMPT", "a charge must never be created twice for the same Idempotency-Key"),
             Source("ARCHITECTURE.md", "one key maps to one charge"),
+        ),
+        gate=True,
+    ),
+    Check(
+        "gate.slow_request_one_charge",
+        "gate",
+        0.0,
+        "Hidden test: while the first request for a key is stuck behind a locked customer row, a "
+        "repeat on the other replica does not create a second charge.",
+        (
+            Source("PROMPT", "a charge must never be created twice for the same Idempotency-Key"),
+            Source("ARCHITECTURE.md", "however long the first request takes"),
         ),
         gate=True,
     ),
@@ -113,13 +127,40 @@ CHECKS: tuple[Check, ...] = (
     Check(
         "hidden.idempotency_concurrent",
         "hidden_test",
-        0.08,
+        0.02,
         "Concurrent requests with one key across two API processes create one charge.",
         (
+            Source("ARCHITECTURE.md", "one key maps to one charge"),
             Source(
-                "CONTRIBUTING.md",
-                "Idempotency is a database guarantee, not a process-local one; we run two API replicas",
+                "ARCHITECTURE.md",
+                "Two replicas behind a round-robin proxy; any request can land on either.",
             ),
+        ),
+    ),
+    Check(
+        "hidden.idempotency_slow_first",
+        "hidden_test",
+        0.04,
+        "A repeat arriving on the other replica while the first request is still blocked (3 s) "
+        "gets the original charge, not a new one.",
+        (
+            Source("PROMPT", "a charge must never be created twice for the same Idempotency-Key"),
+            Source(
+                "ARCHITECTURE.md",
+                "whichever replica it lands on and however long the first request takes",
+            ),
+        ),
+    ),
+    Check(
+        "hidden.idempotency_redis_loss",
+        "hidden_test",
+        0.05,
+        "Same as the slow-first test, but Redis loses its data while the first request is "
+        "blocked: one key still maps to one charge.",
+        (
+            Source("ARCHITECTURE.md", "one key maps to one charge"),
+            Source("ARCHITECTURE.md", "Nothing in Redis is authoritative"),
+            Source("ARCHITECTURE.md", "a failover can lose the most recent writes"),
         ),
     ),
     Check(
@@ -139,20 +180,18 @@ CHECKS: tuple[Check, ...] = (
     Check(
         "hidden.resilience_budget",
         "hidden_test",
-        0.02,
+        0.03,
         "With the processor down, retries stay within 20% of calls.",
         (Source("ARCHITECTURE.md", "retries may not exceed 20% of calls"),),
     ),
+    # --- diagnostics: measured and reported, never scored ----------------------------------
     Check(
-        "hidden.processor_outside_txn",
-        "hidden_test",
-        0.04,
-        "No row locks or open transaction while the processor is called.",
-        (
-            Source(
-                "CONTRIBUTING.md", "Never hold a database transaction open across a network call."
-            ),
-        ),
+        "diag.processor_outside_txn",
+        "diagnostic",
+        0.0,
+        "No row locks or open transaction while the processor is called. The replay already "
+        "scores the consequence (locked customers time out); this only explains it.",
+        (),
     ),
     # --- repo conventions (static) --------------------------------------------------------
     Check(
@@ -216,7 +255,7 @@ CHECKS: tuple[Check, ...] = (
         (
             Source(
                 "CONTRIBUTING.md",
-                "Retries only through ledgerly.resilience; fix it, do not bypass it.",
+                "Retries only through ledgerly.resilience. No hand-rolled retry loops, no retrying in callers.",
             ),
         ),
     ),

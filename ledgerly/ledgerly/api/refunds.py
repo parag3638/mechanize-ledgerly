@@ -1,7 +1,7 @@
 """POST /refunds and GET /refunds?charge_id=.
 
-Full refunds only, one per charge. The refund row is committed before the
-processor call and finalised after it, so no transaction spans the network call.
+Full refunds only, one per charge. The refund row is recorded as pending,
+sent to Paystream, then finalised with Paystream's answer.
 """
 
 from datetime import datetime

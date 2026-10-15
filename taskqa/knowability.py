@@ -2,7 +2,12 @@
 
 A quote must appear verbatim (whitespace-normalised) in its file. ONCALL:<intent>
 sources must also be paired with a PROMPT source that tells the agent to consult
-on-call, since those facts are revealed only when asked.
+on-call, since those facts are revealed only when asked. Diagnostics are unscored
+and need no source.
+
+The other direction is audited too: knowable must not mean told. The agent's repo
+may state goals and policy, but no sentence may name a planted mechanism
+(HINT_PATTERNS); v1 lost most of its difficulty to two such sentences.
 """
 
 import json
@@ -11,6 +16,14 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+# Phrases that would name a planted bug or its fix in the agent-visible repo.
+HINT_PATTERNS: dict[str, str] = {
+    "transaction across a network call": r"(across|spans?) (a|the) network call|transaction open across",
+    "idempotency enforced by the database": r"database guarantee|process-local",
+    "lock expiry": r"ttl is (too )?short|lock (can|may|will|might) expire|expires? before (the )?commit",
+    "lock ownership": r"another (request|replica)'?s? lock|owner(ship)? check",
+}
+HINT_SUFFIXES = (".md", ".py", ".ini", ".toml")
 
 
 @dataclass(frozen=True)
@@ -47,6 +60,9 @@ def audit() -> list[Finding]:
 
     findings: list[Finding] = []
     for check in CHECKS:
+        if check.kind == "diagnostic":
+            findings.append(Finding(check.id, "-", "-", True, "unscored diagnostic"))
+            continue
         if not check.sources:
             findings.append(Finding(check.id, "-", "-", False, "no source declared"))
             continue
@@ -73,6 +89,34 @@ def audit() -> list[Finding]:
                 )
                 continue
             findings.append(Finding(check.id, src.path, src.quote, True, ""))
+    return findings + hint_audit()
+
+
+def hint_audit() -> list[Finding]:
+    """No agent-visible file names a planted mechanism (incident evidence is exempt)."""
+    repo = ROOT / "ledgerly"
+    findings: list[Finding] = []
+    for file in sorted(repo.rglob("*")):
+        rel = file.relative_to(repo)
+        if (
+            not file.is_file()
+            or file.suffix not in HINT_SUFFIXES
+            or rel.parts[0]
+            in (
+                "incident",
+                ".venv",
+            )
+        ):
+            continue
+        text = file.read_text(errors="ignore").lower()
+        for name, pattern in HINT_PATTERNS.items():
+            m = re.search(pattern, text)
+            if m:
+                findings.append(
+                    Finding("hint_audit", str(rel), m.group(0), False, f"names a mechanism: {name}")
+                )
+    if not findings:
+        findings.append(Finding("hint_audit", "ledgerly/", "-", True, "no mechanism named"))
     return findings
 
 
