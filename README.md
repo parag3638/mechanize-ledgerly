@@ -45,7 +45,7 @@ To poke at the system yourself: `make dev-up`, then `make loadtest` (reproduces 
 
 ## Results
 
-**Grader QA** (`QA_REPORT.md`, `qa/report.html`): 6 of 7 checks pass.
+**Grader QA** (`QA_REPORT.md`, [HTML report](https://parag3638.github.io/mechanize-ledgerly/qa/report.html)): 6 of 7 checks pass.
 - Determinism: 5 gradings identical.
 - Reward-hack probes: 15 of 15 under 0.3 (highest 0.10).
 - References: both 1.0.
@@ -54,4 +54,4 @@ To poke at the system yourself: `make dev-up`, then `make loadtest` (reproduces 
 - Interpretation probes: 3 of 3 keep their credit.
 - Rubric variance: fails. The postmortem rubric flipped one criterion once in 15 runs, worth at most 0.017 of a score. This is accepted and documented.
 
-**Frontier run** (`FAILURE_MODES.md`): Codex CLI on `gpt-5.5` scored **0.705**. In 7.4 minutes of agent time it fixed both bugs (perfect replay at 1× and 2×, all gates passed), then hit its 3M-token cap before refunds and the postmortem. The docs that make every check knowable also spell out both mechanisms. That is the report's main finding, with concrete ways to keep the task fair and make it harder.
+**Frontier run** (`FAILURE_MODES.md`, [transcript in the Inspect log viewer](https://parag3638.github.io/mechanize-ledgerly/)): Codex CLI on `gpt-5.5` scored **0.705**. In 7.4 minutes of agent time it fixed both bugs (perfect replay at 1× and 2×, all gates passed), then hit its 3M-token cap before refunds and the postmortem. The docs that make every check knowable also spell out both mechanisms. That is the report's main finding, with concrete ways to keep the task fair and make it harder.
