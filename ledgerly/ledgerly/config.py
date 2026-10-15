@@ -32,6 +32,10 @@ class Settings(BaseSettings):
     redis_url: str = "redis://redis:6379/0"
     stream_name: str = "charges.created"
     consumer_group: str = "workers"
+    # Idempotency locks (ledgerly/idempotency.py)
+    idempotency_lock_ttl_ms: int = 1000
+    idempotency_lock_wait_ms: int = 3000
+    idempotency_lock_poll_ms: int = 20
 
     # Worker
     worker_concurrency: int = 12

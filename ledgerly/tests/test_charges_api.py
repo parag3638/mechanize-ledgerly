@@ -32,6 +32,21 @@ def test_retry_with_same_key_returns_original_charge(client: TestClient, custome
     assert again.json()["id"] == first.json()["id"]
 
 
+def test_same_key_concurrently_creates_one_charge(client: TestClient, customer: str) -> None:
+    from concurrent.futures import ThreadPoolExecutor
+
+    def post() -> dict[str, object]:
+        resp = client.post(
+            "/charges", json=charge_body(customer), headers={"Idempotency-Key": "k-burst"}
+        )
+        assert resp.status_code in (200, 201)
+        return resp.json()
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        bodies = list(pool.map(lambda _: post(), range(4)))
+    assert len({b["id"] for b in bodies}) == 1
+
+
 def test_get_charge(client: TestClient, customer: str) -> None:
     created = client.post(
         "/charges", json=charge_body(customer), headers={"Idempotency-Key": "k-3"}

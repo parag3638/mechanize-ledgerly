@@ -2,7 +2,8 @@
 
 A charge is created `pending` and handed to the worker through the charges
 stream; the worker captures it with the processor. Clients retry with the same
-Idempotency-Key, and get the original charge back.
+Idempotency-Key, and get the original charge back; repeats are serialised across
+replicas by the idempotency lock (ledgerly/idempotency.py).
 """
 
 from datetime import datetime
@@ -11,7 +12,7 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Header, Request, Response
 from pydantic import BaseModel, Field
 
-from ledgerly import ids, queue
+from ledgerly import idempotency, ids, queue
 from ledgerly.api.errors import ApiError
 from ledgerly.db import get_conn
 from ledgerly.log import get_logger
@@ -55,41 +56,45 @@ def create_charge(
     response: Response,
     idempotency_key: Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=200)],
 ) -> ChargeOut:
-    with get_conn() as conn, conn.transaction():
-        existing = conn.execute(
-            f"SELECT {CHARGE_COLUMNS} FROM charges WHERE idempotency_key = %s",
-            (idempotency_key,),
-        ).fetchone()
-        if existing is not None:
-            response.status_code = 200
-            return to_out(existing)
+    with idempotency.guard(request.app.state.redis, idempotency_key):
+        with get_conn() as conn, conn.transaction():
+            existing = conn.execute(
+                f"SELECT {CHARGE_COLUMNS} FROM charges WHERE idempotency_key = %s",
+                (idempotency_key,),
+            ).fetchone()
+            if existing is not None:
+                response.status_code = 200
+                return to_out(existing)
 
-        # Velocity check: lock the customer row so concurrent charges can't both pass the cap.
-        customer = conn.execute(
-            """
-            SELECT id, daily_cap_cents, charged_today_cents FROM customers
-            WHERE id = %s FOR UPDATE
-            """,
-            (body.customer_id,),
-        ).fetchone()
-        if customer is None:
-            raise ApiError(404, "customer_not_found", "No customer with that id.")
-        if customer["charged_today_cents"] + body.amount_cents > customer["daily_cap_cents"]:
-            raise ApiError(422, "velocity_limit", "This charge exceeds the customer's daily limit.")
+            # Velocity check: lock the customer row so concurrent charges can't both pass the cap.
+            customer = conn.execute(
+                """
+                SELECT id, daily_cap_cents, charged_today_cents FROM customers
+                WHERE id = %s FOR UPDATE
+                """,
+                (body.customer_id,),
+            ).fetchone()
+            if customer is None:
+                raise ApiError(404, "customer_not_found", "No customer with that id.")
+            if customer["charged_today_cents"] + body.amount_cents > customer["daily_cap_cents"]:
+                raise ApiError(
+                    422, "velocity_limit", "This charge exceeds the customer's daily limit."
+                )
 
-        row = conn.execute(
-            f"""
-            INSERT INTO charges (id, idempotency_key, customer_id, amount_cents, currency, status)
-            VALUES (%s, %s, %s, %s, %s, 'pending')
-            RETURNING {CHARGE_COLUMNS}
-            """,
-            (ids.new_id(), idempotency_key, body.customer_id, body.amount_cents, body.currency),
-        ).fetchone()
-        assert row is not None
-        conn.execute(
-            "UPDATE customers SET charged_today_cents = charged_today_cents + %s WHERE id = %s",
-            (body.amount_cents, body.customer_id),
-        )
+            row = conn.execute(
+                f"""
+                INSERT INTO charges
+                    (id, idempotency_key, customer_id, amount_cents, currency, status)
+                VALUES (%s, %s, %s, %s, %s, 'pending')
+                RETURNING {CHARGE_COLUMNS}
+                """,
+                (ids.new_id(), idempotency_key, body.customer_id, body.amount_cents, body.currency),
+            ).fetchone()
+            assert row is not None
+            conn.execute(
+                "UPDATE customers SET charged_today_cents = charged_today_cents + %s WHERE id = %s",
+                (body.amount_cents, body.customer_id),
+            )
 
     charge = to_out(row)
     queue.publish_charge_created(request.app.state.redis, charge.id)
