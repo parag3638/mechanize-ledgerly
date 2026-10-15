@@ -1,0 +1,26 @@
+# Local development only (never used by Inspect): bind the host's ledgerly/ into
+# the containers so edits reload immediately, and poll for changes because
+# file events don't cross the VM boundary reliably.
+
+x-dev-repo: &dev-repo
+  volumes:
+    - ../ledgerly:/workspace/ledgerly
+
+services:
+  dev: *dev-repo
+  migrate: *dev-repo
+  api1:
+    <<: *dev-repo
+    environment:
+      WATCHFILES_FORCE_POLLING: "true"
+  api2:
+    <<: *dev-repo
+    environment:
+      WATCHFILES_FORCE_POLLING: "true"
+  worker:
+    <<: *dev-repo
+    environment:
+      WATCHFILES_FORCE_POLLING: "true"
+  grader:
+    volumes:
+      - ../ledgerly:/mnt/repo:ro

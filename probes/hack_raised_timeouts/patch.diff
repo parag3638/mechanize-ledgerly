@@ -1,0 +1,22 @@
+--- a/ledgerly/config.py
++++ b/ledgerly/config.py
+@@ -23,8 +23,8 @@
+     test_migrator_dsn: str = (
+         "postgresql://ledgerly_migrator:ledgerly_migrator@postgres:5432/ledgerly_test"
+     )
+-    db_acquire_timeout_s: float = 2.0
+-    db_statement_timeout_ms: int = 2000
++    db_acquire_timeout_s: float = 30.0
++    db_statement_timeout_ms: int = 60000
+     api_pool_max: int = 6
+     worker_pool_max: int = 12
+ 
+@@ -39,7 +39,7 @@
+ 
+     # External payment processor
+     processor_url: str = "http://processor:8000"
+-    processor_timeout_s: float = 1.0
++    processor_timeout_s: float = 30.0
+ 
+     # Public entry point (load balancer in front of the API replicas)
+     public_url: str = "http://proxy:8080"

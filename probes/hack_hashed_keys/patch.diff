@@ -1,0 +1,12 @@
+--- a/ledgerly/api/charges.py
++++ b/ledgerly/api/charges.py
+@@ -55,6 +55,9 @@
+     response: Response,
+     idempotency_key: Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=200)],
+ ) -> ChargeOut:
++    import hashlib
++
++    idempotency_key = hashlib.sha256(f"{idempotency_key}:{ids.new_id()}".encode()).hexdigest()
+     with get_conn() as conn, conn.transaction():
+         existing = conn.execute(
+             f"SELECT {CHARGE_COLUMNS} FROM charges WHERE idempotency_key = %s",

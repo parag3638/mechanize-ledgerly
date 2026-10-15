@@ -1,0 +1,13 @@
+**/.venv
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+**/.DS_Store
+.git
+.refs
+.env
+runs
+www
+qa
+**/.cc-writes
+ledgerly/**/.claude

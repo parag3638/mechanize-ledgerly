@@ -1,0 +1,269 @@
+# Ledgerly incident sandbox. Used by Inspect (one project per sample) and, with
+# compose.dev.yaml on top, by `make dev-up` for local development.
+# Resource caps are fixed here so the agent's loadtest and the grader's replay
+# run on identical hardware. The agent never sees this file.
+
+x-app-env: &app-env
+  LEDGERLY_APP_DSN: postgresql://ledgerly_app:ledgerly_app@postgres:5432/ledgerly
+  LEDGERLY_MIGRATOR_DSN: postgresql://ledgerly_migrator:ledgerly_migrator@postgres:5432/ledgerly
+  LEDGERLY_TEST_APP_DSN: postgresql://ledgerly_app:ledgerly_app@postgres:5432/ledgerly_test
+  LEDGERLY_TEST_MIGRATOR_DSN: postgresql://ledgerly_migrator:ledgerly_migrator@postgres:5432/ledgerly_test
+  LEDGERLY_REDIS_URL: redis://redis:6379/0
+  LEDGERLY_PROCESSOR_URL: http://processor:8000
+  LEDGERLY_PUBLIC_URL: http://proxy:8080
+
+x-supervised-env: &supervised-env
+  SUPERVISOR_TOKEN: grader-only-7c2e5d18f0
+
+x-app: &app
+  image: ledgerly/app:local
+  build:
+    context: ..
+    dockerfile: task/images/app/Dockerfile
+  init: true
+  volumes:
+    - repo:/workspace/ledgerly
+    - audit:/var/log/audit
+  networks: [ledgerly]
+
+x-health: &health
+  interval: 2s
+  timeout: 3s
+  retries: 30
+
+services:
+  dev:
+    x-default: true
+    image: ledgerly/dev:local
+    build:
+      context: ..
+      dockerfile: task/images/dev/Dockerfile
+    init: true
+    environment: *app-env
+    volumes:
+      - repo:/workspace/ledgerly
+      - audit:/var/log/audit:ro
+    networks: [ledgerly]
+    cpus: 1.0
+    mem_limit: 1g
+    healthcheck:
+      test: ["CMD", "test", "-f", "/workspace/ledgerly/pyproject.toml"]
+      <<: *health
+
+  postgres:
+    image: ledgerly/postgres:local
+    build:
+      context: ..
+      dockerfile: task/images/postgres/Dockerfile
+    environment:
+      <<: *supervised-env
+      POSTGRES_PASSWORD: grader-only-5f1c9e2b7a
+    command:
+      - postgres
+      - -c
+      - max_connections=40
+      - -c
+      - shared_buffers=64MB
+      - -c
+      - log_statement=ddl
+      - -c
+      - logging_collector=on
+      - -c
+      - log_destination=jsonlog
+      - -c
+      - log_directory=/var/log/audit/postgres
+      - -c
+      - log_filename=postgresql.log
+      - -c
+      - log_rotation_age=0
+      - -c
+      - log_rotation_size=0
+    volumes:
+      - audit:/var/log/audit
+    networks: [ledgerly]
+    cpus: 1.0
+    mem_limit: 768m
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "ledgerly"]
+      <<: *health
+
+  redis:
+    image: ledgerly/redis:local
+    build:
+      context: ..
+      dockerfile: task/images/redis/Dockerfile
+    environment: *supervised-env
+    volumes:
+      - audit:/var/log/audit
+    networks: [ledgerly]
+    cpus: 0.25
+    mem_limit: 128m
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      <<: *health
+
+  processor:
+    image: ledgerly/processor:local
+    build:
+      context: ..
+      dockerfile: task/images/processor/Dockerfile
+    environment:
+      PROCESSOR_SEED: paystream-2026
+      PROCESSOR_SLOTS: "48"
+      PROCESSOR_ADMIN_TOKEN: grader-only-0b7d3a91c4
+      PROCESSOR_LEDGER_FILE: /opt/processor/baseline/processor_ledger.json
+    networks: [ledgerly]
+    cpus: 0.5
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz', timeout=2)"]
+      <<: *health
+
+  oncall:
+    image: ledgerly/oncall:local
+    build:
+      context: ..
+      dockerfile: task/images/oncall/Dockerfile
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ONCALL_MODEL: ${ONCALL_MODEL:-}
+      ONCALL_OFFLINE: ${ONCALL_OFFLINE:-}
+    volumes:
+      - audit:/var/log/audit
+    networks: [ledgerly, egress]
+    cpus: 0.25
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz', timeout=2)"]
+      <<: *health
+
+  migrate:
+    <<: *app
+    user: app
+    environment: *app-env
+    command: ["sh", "-c", "alembic upgrade head && python /opt/task/devseed.py"]
+    restart: "no"
+    depends_on:
+      postgres: {condition: service_healthy}
+      dev: {condition: service_healthy}
+
+  api1: &api
+    <<: *app
+    environment:
+      <<: [*app-env, *supervised-env]
+      LEDGERLY_SERVICE_NAME: api1
+    command:
+      - python
+      - /opt/supervisor/supervisor.py
+      - --service=api1
+      - --user=app
+      - --
+      - uvicorn
+      - ledgerly.api.main:app
+      - --host=0.0.0.0
+      - --port=8000
+      - --reload
+      - --reload-dir=/workspace/ledgerly/ledgerly
+      - --timeout-graceful-shutdown=3
+      - --limit-concurrency=100
+      - --no-access-log
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+      processor: {condition: service_healthy}
+    restart: on-failure
+    cpus: 0.5
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz', timeout=2)"]
+      <<: *health
+
+  api2:
+    <<: *api
+    environment:
+      <<: [*app-env, *supervised-env]
+      LEDGERLY_SERVICE_NAME: api2
+    command:
+      - python
+      - /opt/supervisor/supervisor.py
+      - --service=api2
+      - --user=app
+      - --
+      - uvicorn
+      - ledgerly.api.main:app
+      - --host=0.0.0.0
+      - --port=8000
+      - --reload
+      - --reload-dir=/workspace/ledgerly/ledgerly
+      - --timeout-graceful-shutdown=3
+      - --limit-concurrency=100
+      - --no-access-log
+
+  worker:
+    <<: *app
+    environment:
+      <<: [*app-env, *supervised-env]
+      LEDGERLY_SERVICE_NAME: worker
+    command:
+      - python
+      - /opt/supervisor/supervisor.py
+      - --service=worker
+      - --user=app
+      - --
+      - watchfiles
+      - --filter=python
+      - --sigint-timeout=3
+      - python -m ledgerly.worker.main
+      - /workspace/ledgerly/ledgerly
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+      processor: {condition: service_healthy}
+    restart: on-failure
+    cpus: 0.5
+    mem_limit: 384m
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9101/metrics', timeout=2)"]
+      <<: *health
+
+  proxy:
+    image: ledgerly/proxy:local
+    build:
+      context: ..
+      dockerfile: task/images/proxy/Dockerfile
+    depends_on:
+      api1: {condition: service_healthy}
+      api2: {condition: service_healthy}
+    networks: [ledgerly]
+    cpus: 0.25
+    mem_limit: 64m
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8080/nginx-health"]
+      <<: *health
+
+  grader:
+    image: ledgerly/grader:local
+    build:
+      context: ..
+      dockerfile: task/images/grader/Dockerfile
+    init: true
+    environment:
+      POSTGRES_PASSWORD: grader-only-5f1c9e2b7a
+      SUPERVISOR_TOKEN: grader-only-7c2e5d18f0
+      PROCESSOR_ADMIN_TOKEN: grader-only-0b7d3a91c4
+      PROCESSOR_SEED: paystream-2026
+    volumes:
+      - repo:/mnt/repo:ro
+      - audit:/var/log/audit:ro
+    networks: [ledgerly]
+    cpus: 1.0
+    mem_limit: 1g
+
+volumes:
+  repo: {}
+  audit: {}
+
+networks:
+  ledgerly:
+    internal: true
+  egress: {}

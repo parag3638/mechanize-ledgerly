@@ -1,0 +1,11 @@
+--- a/ledgerly/worker/processing.py
++++ b/ledgerly/worker/processing.py
+@@ -21,7 +21,7 @@
+ log = get_logger(__name__)
+ 
+ 
+-@retry(on=(ProcessorTimeout, ProcessorError))
++@retry(on=(ProcessorTimeout, ProcessorError), attempts=1)
+ def charge_processor(client: ProcessorClient, charge: dict[str, Any]) -> ProcessorResult:
+     return client.charge(
+         charge_id=str(charge["id"]),

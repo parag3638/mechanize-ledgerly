@@ -1,0 +1,40 @@
+[project]
+name = "ledgerly-incident"
+version = "0.1.0"
+description = "An SRE incident task for coding agents, with a grader and a grader QA kit."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "anthropic>=1.13.0",
+    "httpx>=0.28.1",
+    "inspect-ai>=0.3.280",
+    "inspect-swe>=0.2.71",
+    "jinja2>=3.1.6",
+    "openai>=3.31.0",
+    "pyrage>=1.4.0",
+    "typer>=0.27.3",
+]
+
+[dependency-groups]
+dev = [
+    "psycopg[binary]>=3.3.6",
+    "pyright>=1.1.414",
+    "pytest>=9.1.1",
+    "ruff>=0.17.0",
+]
+
+[tool.pyright]
+# Host-side code only. ledgerly/ (the agent-visible repo) and the processor
+# have their own environments and are type-checked inside their images.
+typeCheckingMode = "standard"
+venvPath = "."
+venv = ".venv"
+include = ["task/replayer", "task/profiles", "task/grader", "taskqa"]
+extraPaths = ["task", "task/replayer", "task/processor"]
+exclude = ["**/.venv", "**/__pycache__", "runs", "www"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

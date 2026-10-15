@@ -1,0 +1,9 @@
+# Baseline capture only (task/baseline/make_baseline.py): start from an empty
+# schema instead of the handoff snapshot, and Paystream with no prior state.
+services:
+  postgres:
+    environment:
+      LEDGERLY_SKIP_BASELINE: "1"
+  processor:
+    environment:
+      PROCESSOR_LEDGER_FILE: ""

@@ -1,0 +1,26 @@
+# secrets
+.env
+.env.*
+!.env.example
+# the agent-visible repo's staging defaults (sandbox-only role passwords, not secrets)
+!ledgerly/.env
+
+# decrypted reference solutions (never commit; see DECISIONS.md D4)
+.refs/
+
+# eval output
+runs/logs/
+www/
+qa/
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# misc
+.DS_Store
+*.pem
+.backup/

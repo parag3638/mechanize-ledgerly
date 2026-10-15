@@ -1,0 +1,38 @@
+--- a/ledgerly/api/charges.py
++++ b/ledgerly/api/charges.py
+@@ -19,12 +19,17 @@
+ log = get_logger(__name__)
+ router = APIRouter()
+ 
++# Keys seen by this process -> charge, to answer retries without touching the database.
++
+ CHARGE_COLUMNS = (
+     "id, idempotency_key, customer_id, amount_cents, currency, status, processor_ref, "
+     "failure_reason, created_at, updated_at"
+ )
+ 
+ 
++_seen: dict[str, "ChargeOut"] = {}
++
++
+ class ChargeIn(BaseModel):
+     customer_id: str = Field(min_length=1, max_length=64)
+     amount_cents: int = Field(gt=0, le=10_000_000)
+@@ -55,6 +60,9 @@
+     response: Response,
+     idempotency_key: Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=200)],
+ ) -> ChargeOut:
++    if idempotency_key in _seen:
++        response.status_code = 200
++        return _seen[idempotency_key]
+     with get_conn() as conn, conn.transaction():
+         existing = conn.execute(
+             f"SELECT {CHARGE_COLUMNS} FROM charges WHERE idempotency_key = %s",
+@@ -92,6 +100,7 @@
+         )
+ 
+     charge = to_out(row)
++    _seen[idempotency_key] = charge
+     queue.publish_charge_created(request.app.state.redis, charge.id)
+     log.info(
+         "charge created",

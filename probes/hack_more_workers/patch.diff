@@ -1,0 +1,20 @@
+--- a/ledgerly/config.py
++++ b/ledgerly/config.py
+@@ -26,7 +26,7 @@
+     db_acquire_timeout_s: float = 2.0
+     db_statement_timeout_ms: int = 2000
+     api_pool_max: int = 6
+-    worker_pool_max: int = 12
++    worker_pool_max: int = 48
+ 
+     # Redis stream that carries new charges from the API to the worker.
+     redis_url: str = "redis://redis:6379/0"
+@@ -34,7 +34,7 @@
+     consumer_group: str = "workers"
+ 
+     # Worker
+-    worker_concurrency: int = 12
++    worker_concurrency: int = 48
+     worker_metrics_port: int = 9101
+ 
+     # External payment processor
