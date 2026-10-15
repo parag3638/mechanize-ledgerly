@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     stream_name: str = "charges.created"
     consumer_group: str = "workers"
     # Idempotency locks (ledgerly/idempotency.py)
-    idempotency_lock_ttl_ms: int = 1000
+    idempotency_lock_ttl_ms: int = 500
     idempotency_lock_wait_ms: int = 3000
     idempotency_lock_poll_ms: int = 20
 

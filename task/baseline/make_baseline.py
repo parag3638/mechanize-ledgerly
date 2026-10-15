@@ -3,7 +3,8 @@
     python task/baseline/make_baseline.py            # ~15 minutes
 
 1. Fresh stack without a baseline; seed 14 days of historical charges.
-2. Replay the outage profile (2x traffic, 10 minutes) through the unfixed code
+2. Replay the outage profile (the incident load, 1x, with heavy hedging; 10 minutes)
+   through the unfixed code
    while scraping metrics and Redis every 10 s.
 3. "The on-call restarts the worker": Paystream's slow keys recover and the
    worker is restarted through its supervisor; the backlog drains.
@@ -190,7 +191,7 @@ def run_outage(duration: float, rate: float) -> None:
             str(duration),
             # The mobile SDK hedges more when latency is high.
             "--double-share",
-            "0.2",
+            "0.6",
             "--out",
             str(profile),
         ]
@@ -348,7 +349,7 @@ def facts() -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--duration", type=float, default=600)
-    parser.add_argument("--rate", type=float, default=15)
+    parser.add_argument("--rate", type=float, default=10)
     args = parser.parse_args()
 
     dc("down", "-v", "--remove-orphans", check=False)

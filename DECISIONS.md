@@ -2,6 +2,23 @@
 
 What was proposed, what the owner chose, and why. Newest first. The full design these refer to is in `PROJECT.md`.
 
+## 2026-10-15 — v2: make the task hard, keep it fair (plan in docs/plans/2026-10-15-v2-difficulty.md)
+
+Proposed by the architect after v1's frontier run, approved by the owner.
+Chosen:
+- **Outcomes, not mechanisms.** The agent-visible docs no longer name either bug: two CONTRIBUTING sentences and "fix it, do not bypass it" are gone, and so is a refunds docstring clause and a worker docstring phrase. `processor_outside_txn` becomes an unscored diagnostic, since the replay already scores its consequence. A knowability "hint audit" now fails if a mechanism phrase reappears.
+- **New bug 2.** Idempotency rests on a Redis lock (`SET NX PX`, plain `DEL` release) around the create-charge transaction. A first request blocked on the customer row for longer than the TTL loses the lock; a repeat takes it, can't see the uncommitted charge, and inserts another.
+  - It is latent once bug 1 is fixed: requests are fast again, so the replays come out clean.
+  - New hidden tests catch it deterministically: slow first request (0.04, also a gate) and Redis losing the lock (0.05).
+- **Rejected alternatives:**
+  - release before commit (a coin flip after the fix);
+  - a per-replica lock key, or double-checked locking (visible in the load test);
+  - Redis eviction (can't be reproduced in the replay);
+  - REPEATABLE READ (produces serialization errors, not duplicates);
+  - a 2×-only fault (a knife edge on 4 CPUs).
+
+**Calibration finding: TTL 500 ms, not 1000.** At 1000 ms the outage capture produced zero duplicates (and so did a 2-minute outage slice). A first request only survives if it waits less than the API's 2 s statement timeout, and during the outage, rows are held either briefly or indefinitely. At 500 ms with 40% hedged requests, the slice produced 4 duplicates per 1,716 keys (0 at 1000 ms), so the baseline uses TTL 500 and `--double-share 0.4`. The docstring's rationale ("creating a charge takes a few milliseconds") still holds. The hidden tests hold the first request for 3 s, so they don't depend on the TTL.
+
 ## 2026-10-15 — P7 published
 
 Proposed: repo name (ledgerly-incident / ledgerly-sre-eval / mechanize-ledgerly), visibility, and whether to publish the log viewer and QA report on Pages.

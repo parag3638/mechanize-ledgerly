@@ -75,7 +75,7 @@ Ground truth for this incident (the author did not have this list):
 - Duplicate charges created: {dup_rows} rows beyond the first per Idempotency-Key ({dup_keys} keys).
 - Mechanism 1: unbounded immediate retries of processor timeouts inside the worker's database
   transaction, holding the customer row lock; API requests for those customers blocked/timed out.
-- Mechanism 2: a Redis idempotency lock with a 1 s TTL, released with a plain DEL. While the
+- Mechanism 2: a Redis idempotency lock with a 500 ms TTL, released with a plain DEL. While the
   first request was blocked on the customer row for longer than the TTL, a hedged or retried
   request took the lock, did not see the uncommitted charge, and inserted another; the first
   request's DEL could also free the second's lock. Nothing in the database enforced the key.

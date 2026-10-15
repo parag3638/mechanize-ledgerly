@@ -1,586 +1,594 @@
 # redis-cli info memory / xlen / xinfo groups, sampled every 10 s
 
 # sample 2026-10-14T11:21:30.000Z
-used_memory:1239696
+used_memory:1239664
 used_memory_human:1.18M
-used_memory_rss_human:9.88M
+used_memory_rss_human:9.75M
 used_memory_peak_human:1.18M
 0
 name workers consumers 1 pending 0 last-delivered-id 0-0 entries-read  lag 0
 
-# sample 2026-10-14T11:21:40.348Z
-used_memory:1395808
-used_memory_human:1.33M
+# sample 2026-10-14T11:21:40.326Z
+used_memory:1514016
+used_memory_human:1.44M
 used_memory_rss_human:10.00M
-used_memory_peak_human:1.35M
-142
-name workers consumers 1 pending 7 last-delivered-id 1792000719871-0 entries-read 142 lag 0
+used_memory_peak_human:1.49M
+106
+name workers consumers 1 pending 4 last-delivered-id 1792083809598-0 entries-read 106 lag 0
 
-# sample 2026-10-14T11:21:50.653Z
-used_memory:1379720
-used_memory_human:1.32M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.35M
-241
-name workers consumers 1 pending 13 last-delivered-id 1792000728770-0 entries-read 226 lag 15
-
-# sample 2026-10-14T11:22:01.028Z
-used_memory:1384016
-used_memory_human:1.32M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.35M
-337
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 97
-
-# sample 2026-10-14T11:22:11.536Z
-used_memory:1388160
-used_memory_human:1.32M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.35M
-424
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 184
-
-# sample 2026-10-14T11:22:21.930Z
-used_memory:1398888
-used_memory_human:1.33M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.35M
-522
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 282
-
-# sample 2026-10-14T11:22:32.251Z
-used_memory:1403032
-used_memory_human:1.34M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.35M
-622
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 382
-
-# sample 2026-10-14T11:22:42.664Z
-used_memory:1407184
-used_memory_human:1.34M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.36M
-686
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 446
-
-# sample 2026-10-14T11:22:53.087Z
-used_memory:1411328
-used_memory_human:1.35M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.36M
-775
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 535
-
-# sample 2026-10-14T11:23:03.397Z
-used_memory:1415488
-used_memory_human:1.35M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.37M
-864
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 624
-
-# sample 2026-10-14T11:23:13.757Z
-used_memory:1440104
-used_memory_human:1.37M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.37M
-938
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 698
-
-# sample 2026-10-14T11:23:24.143Z
-used_memory:1419632
-used_memory_human:1.35M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.37M
-997
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 757
-
-# sample 2026-10-14T11:23:34.538Z
-used_memory:1423776
-used_memory_human:1.36M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.37M
-1082
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 842
-
-# sample 2026-10-14T11:23:44.982Z
-used_memory:1427928
-used_memory_human:1.36M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.37M
-1169
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 929
-
-# sample 2026-10-14T11:23:55.375Z
-used_memory:1432072
-used_memory_human:1.37M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.39M
-1262
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 1022
-
-# sample 2026-10-14T11:24:05.763Z
-used_memory:1440376
-used_memory_human:1.37M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.39M
-1371
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 1131
-
-# sample 2026-10-14T11:24:16.146Z
-used_memory:1444520
-used_memory_human:1.38M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.39M
-1451
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 1211
-
-# sample 2026-10-14T11:24:26.523Z
-used_memory:1464992
-used_memory_human:1.40M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.40M
-1526
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 1286
-
-# sample 2026-10-14T11:24:36.963Z
-used_memory:1448664
-used_memory_human:1.38M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.40M
-1596
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 1356
-
-# sample 2026-10-14T11:24:47.426Z
-used_memory:1452816
+# sample 2026-10-14T11:21:50.691Z
+used_memory:1457048
 used_memory_human:1.39M
 used_memory_rss_human:10.00M
-used_memory_peak_human:1.40M
-1665
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 1425
+used_memory_peak_human:1.49M
+173
+name workers consumers 1 pending 8 last-delivered-id 1792083819785-0 entries-read 173 lag 0
 
-# sample 2026-10-14T11:24:57.811Z
-used_memory:1456960
-used_memory_human:1.39M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.40M
-1747
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 1507
-
-# sample 2026-10-14T11:25:08.197Z
-used_memory:1481584
-used_memory_human:1.41M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.41M
-1826
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 1586
-
-# sample 2026-10-14T11:25:18.582Z
-used_memory:1465272
-used_memory_human:1.40M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.41M
-1915
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 1675
-
-# sample 2026-10-14T11:25:28.975Z
-used_memory:1490912
-used_memory_human:1.42M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.42M
-2005
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 1765
-
-# sample 2026-10-14T11:25:39.297Z
-used_memory:1474584
-used_memory_human:1.41M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.42M
-2083
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 1843
-
-# sample 2026-10-14T11:25:49.720Z
-used_memory:1478736
-used_memory_human:1.41M
-used_memory_rss_human:10.00M
-used_memory_peak_human:1.43M
-2164
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 1924
-
-# sample 2026-10-14T11:26:00.128Z
-used_memory:1503352
-used_memory_human:1.43M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.43M
-2246
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2006
-
-# sample 2026-10-14T11:26:10.492Z
-used_memory:1507496
-used_memory_human:1.44M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.44M
-2347
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2107
-
-# sample 2026-10-14T11:26:20.834Z
-used_memory:1491184
-used_memory_human:1.42M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.44M
-2400
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2160
-
-# sample 2026-10-14T11:26:31.287Z
-used_memory:1495328
-used_memory_human:1.43M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.44M
-2494
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2254
-
-# sample 2026-10-14T11:26:41.711Z
-used_memory:1499496
-used_memory_human:1.43M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.45M
-2577
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2337
-
-# sample 2026-10-14T11:26:52.030Z
-used_memory:1506072
-used_memory_human:1.44M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.45M
-2663
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2423
-
-# sample 2026-10-14T11:27:02.409Z
-used_memory:1510216
-used_memory_human:1.44M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.46M
-2742
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2502
-
-# sample 2026-10-14T11:27:12.840Z
-used_memory:1510216
-used_memory_human:1.44M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.46M
-2801
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2561
-
-# sample 2026-10-14T11:27:23.254Z
-used_memory:1514368
-used_memory_human:1.44M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.46M
-2862
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2622
-
-# sample 2026-10-14T11:27:33.589Z
-used_memory:1518528
-used_memory_human:1.45M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.46M
-2933
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2693
-
-# sample 2026-10-14T11:27:43.948Z
-used_memory:1522672
-used_memory_human:1.45M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.46M
-3033
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2793
-
-# sample 2026-10-14T11:27:54.371Z
-used_memory:1526816
-used_memory_human:1.46M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.46M
-3127
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2887
-
-# sample 2026-10-14T11:28:04.704Z
-used_memory:1530968
-used_memory_human:1.46M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.46M
-3195
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 2955
-
-# sample 2026-10-14T11:28:15.128Z
-used_memory:1535112
-used_memory_human:1.46M
-used_memory_rss_human:10.12M
-used_memory_peak_human:1.46M
-3275
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 3035
-
-# sample 2026-10-14T11:28:25.453Z
-used_memory:1539248
-used_memory_human:1.47M
-used_memory_rss_human:10.25M
-used_memory_peak_human:1.47M
-3365
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 3125
-
-# sample 2026-10-14T11:28:35.823Z
-used_memory:1543408
-used_memory_human:1.47M
-used_memory_rss_human:10.25M
-used_memory_peak_human:1.47M
-3439
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 3199
-
-# sample 2026-10-14T11:28:46.187Z
-used_memory:1547552
+# sample 2026-10-14T11:22:01.087Z
+used_memory:1549992
 used_memory_human:1.48M
-used_memory_rss_human:10.25M
-used_memory_peak_human:1.48M
-3519
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 3279
+used_memory_rss_human:10.00M
+used_memory_peak_human:1.51M
+237
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 5
 
-# sample 2026-10-14T11:28:56.550Z
-used_memory:1551696
-used_memory_human:1.48M
-used_memory_rss_human:10.25M
-used_memory_peak_human:1.48M
-3591
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 3351
+# sample 2026-10-14T11:22:11.479Z
+used_memory:1534400
+used_memory_human:1.46M
+used_memory_rss_human:10.00M
+used_memory_peak_human:1.51M
+294
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 62
 
-# sample 2026-10-14T11:29:06.982Z
-used_memory:1555848
-used_memory_human:1.48M
-used_memory_rss_human:10.25M
-used_memory_peak_human:1.48M
-3662
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 3422
+# sample 2026-10-14T11:22:21.953Z
+used_memory:1499664
+used_memory_human:1.43M
+used_memory_rss_human:10.00M
+used_memory_peak_human:1.51M
+374
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 142
 
-# sample 2026-10-14T11:29:17.340Z
-used_memory:1558272
-used_memory_human:1.49M
-used_memory_rss_human:10.25M
-used_memory_peak_human:1.54M
-3745
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 3505
-
-# sample 2026-10-14T11:29:27.728Z
-used_memory:1566568
-used_memory_human:1.49M
-used_memory_rss_human:10.25M
-used_memory_peak_human:1.54M
-3852
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 3612
-
-# sample 2026-10-14T11:29:38.127Z
-used_memory:1570728
-used_memory_human:1.50M
-used_memory_rss_human:10.25M
-used_memory_peak_human:1.54M
-3950
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 3710
-
-# sample 2026-10-14T11:29:48.551Z
-used_memory:1577296
-used_memory_human:1.50M
-used_memory_rss_human:10.25M
-used_memory_peak_human:1.54M
-4022
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 3782
-
-# sample 2026-10-14T11:29:59.004Z
-used_memory:1581440
-used_memory_human:1.51M
-used_memory_rss_human:10.25M
-used_memory_peak_human:1.54M
-4110
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 3870
-
-# sample 2026-10-14T11:30:09.365Z
-used_memory:1585592
-used_memory_human:1.51M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.54M
-4186
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 3946
-
-# sample 2026-10-14T11:30:19.763Z
-used_memory:1589736
-used_memory_human:1.52M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.54M
-4280
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 4040
-
-# sample 2026-10-14T11:30:30.159Z
-used_memory:1593872
-used_memory_human:1.52M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.54M
-4354
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 4114
-
-# sample 2026-10-14T11:30:40.504Z
-used_memory:1598032
-used_memory_human:1.52M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.54M
-4428
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 4188
-
-# sample 2026-10-14T11:30:50.909Z
-used_memory:1602176
-used_memory_human:1.53M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.54M
-4543
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 4303
-
-# sample 2026-10-14T11:31:01.294Z
-used_memory:1606320
-used_memory_human:1.53M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.54M
-4607
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 4367
-
-# sample 2026-10-14T11:31:11.749Z
-used_memory:1610472
-used_memory_human:1.54M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.54M
-4713
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 4473
-
-# sample 2026-10-14T11:31:22.191Z
-used_memory:1614616
-used_memory_human:1.54M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.57M
-4787
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 4547
-
-# sample 2026-10-14T11:31:32.520Z
-used_memory:1618768
-used_memory_human:1.54M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.57M
-4891
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 4651
-
-# sample 2026-10-14T11:31:42.925Z
-used_memory:1577824
-used_memory_human:1.50M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.57M
-4909
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 4669
-
-# sample 2026-10-14T11:31:53.289Z
-used_memory:1577824
-used_memory_human:1.50M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.57M
-4909
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 4669
-
-# sample 2026-10-14T11:32:03.649Z
-used_memory:1577840
-used_memory_human:1.50M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.57M
-4909
-name workers consumers 1 pending 14 last-delivered-id 1792000730238-0 entries-read 240 lag 4669
-
-# sample 2026-10-14T11:32:13.916Z
-used_memory:1650976
-used_memory_human:1.57M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.57M
-4909
-name workers consumers 2 pending 24 last-delivered-id 1792000738172-0 entries-read 305 lag 4604
-
-# sample 2026-10-14T11:32:24.228Z
-used_memory:1681424
+# sample 2026-10-14T11:22:32.360Z
+used_memory:1676544
 used_memory_human:1.60M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.60M
-4909
-name workers consumers 2 pending 24 last-delivered-id 1792000881953-0 entries-read 1492 lag 3417
+used_memory_rss_human:10.00M
+used_memory_peak_human:1.66M
+437
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 205
 
-# sample 2026-10-14T11:32:34.636Z
-used_memory:1645624
-used_memory_human:1.57M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.60M
-4909
-name workers consumers 2 pending 24 last-delivered-id 1792001030501-0 entries-read 2658 lag 2251
+# sample 2026-10-14T11:22:42.762Z
+used_memory:1603904
+used_memory_human:1.53M
+used_memory_rss_human:10.00M
+used_memory_peak_human:1.66M
+515
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 283
 
-# sample 2026-10-14T11:32:44.928Z
-used_memory:1666064
+# sample 2026-10-14T11:22:53.206Z
+used_memory:1658048
+used_memory_human:1.58M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.80M
+576
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 344
+
+# sample 2026-10-14T11:23:03.628Z
+used_memory:1664256
 used_memory_human:1.59M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.60M
-4909
-name workers consumers 2 pending 24 last-delivered-id 1792001188078-0 entries-read 3854 lag 1055
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.80M
+636
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 404
 
-# sample 2026-10-14T11:32:55.268Z
-used_memory:1644648
+# sample 2026-10-14T11:23:13.968Z
+used_memory:1689784
+used_memory_human:1.61M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.80M
+697
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 465
+
+# sample 2026-10-14T11:23:24.359Z
+used_memory:1690120
+used_memory_human:1.61M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.80M
+764
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 532
+
+# sample 2026-10-14T11:23:34.799Z
+used_memory:1632208
+used_memory_human:1.56M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.80M
+834
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 602
+
+# sample 2026-10-14T11:23:45.249Z
+used_memory:1801632
+used_memory_human:1.72M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.80M
+882
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 650
+
+# sample 2026-10-14T11:23:55.614Z
+used_memory:1784992
+used_memory_human:1.70M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.80M
+937
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 705
+
+# sample 2026-10-14T11:24:05.998Z
+used_memory:1663392
+used_memory_human:1.59M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.80M
+997
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 765
+
+# sample 2026-10-14T11:24:16.448Z
+used_memory:1687096
+used_memory_human:1.61M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.80M
+1035
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 805
+
+# sample 2026-10-14T11:24:26.781Z
+used_memory:1666416
+used_memory_human:1.59M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.80M
+1098
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 866
+
+# sample 2026-10-14T11:24:37.152Z
+used_memory:1651384
 used_memory_human:1.57M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.60M
-4909
-name workers consumers 2 pending 12 last-delivered-id 1792001317874-0 entries-read 4909 lag 0
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1163
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 931
 
-# sample 2026-10-14T11:33:05.653Z
-used_memory:1603080
-used_memory_human:1.53M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.60M
-4909
-name workers consumers 2 pending 12 last-delivered-id 1792001317874-0 entries-read 4909 lag 0
+# sample 2026-10-14T11:24:47.519Z
+used_memory:1715808
+used_memory_human:1.64M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1216
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 984
 
-# sample 2026-10-14T11:33:15.953Z
-used_memory:1603704
-used_memory_human:1.53M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.60M
-4909
-name workers consumers 2 pending 12 last-delivered-id 1792001317874-0 entries-read 4909 lag 0
+# sample 2026-10-14T11:24:57.914Z
+used_memory:1654456
+used_memory_human:1.58M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1268
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1036
 
-# sample 2026-10-14T11:33:26.368Z
-used_memory:1603704
-used_memory_human:1.53M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.60M
-4909
-name workers consumers 2 pending 12 last-delivered-id 1792001317874-0 entries-read 4909 lag 0
+# sample 2026-10-14T11:25:08.375Z
+used_memory:1700504
+used_memory_human:1.62M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1336
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1104
 
-# sample 2026-10-14T11:50:15.360Z
-used_memory:1603704
-used_memory_human:1.53M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.60M
-4909
-name workers consumers 2 pending 12 last-delivered-id 1792001317874-0 entries-read 4909 lag 0
+# sample 2026-10-14T11:25:18.794Z
+used_memory:1641128
+used_memory_human:1.57M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1414
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1182
 
-# sample 2026-10-14T11:50:25.668Z
-used_memory:1603704
-used_memory_human:1.53M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.60M
-4909
-name workers consumers 2 pending 12 last-delivered-id 1792001317874-0 entries-read 4909 lag 0
+# sample 2026-10-14T11:25:29.204Z
+used_memory:1749632
+used_memory_human:1.67M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1480
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1248
 
-# sample 2026-10-14T11:50:35.997Z
-used_memory:1617936
-used_memory_human:1.54M
-used_memory_rss_human:10.38M
-used_memory_peak_human:1.60M
-4909
-name workers consumers 3 pending 0 last-delivered-id 1792001317874-0 entries-read 4909 lag 0
+# sample 2026-10-14T11:25:39.529Z
+used_memory:1774712
+used_memory_human:1.69M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1544
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1312
+
+# sample 2026-10-14T11:25:49.912Z
+used_memory:1670976
+used_memory_human:1.59M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1600
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1368
+
+# sample 2026-10-14T11:26:00.262Z
+used_memory:1736376
+used_memory_human:1.66M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1649
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1417
+
+# sample 2026-10-14T11:26:10.702Z
+used_memory:1679864
+used_memory_human:1.60M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1718
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1486
+
+# sample 2026-10-14T11:26:21.110Z
+used_memory:1700056
+used_memory_human:1.62M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1780
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1548
+
+# sample 2026-10-14T11:26:31.549Z
+used_memory:1684208
+used_memory_human:1.61M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1832
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1600
+
+# sample 2026-10-14T11:26:41.961Z
+used_memory:1749272
+used_memory_human:1.67M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1895
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1663
+
+# sample 2026-10-14T11:26:52.284Z
+used_memory:1774944
+used_memory_human:1.69M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+1962
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1730
+
+# sample 2026-10-14T11:27:02.650Z
+used_memory:1712184
+used_memory_human:1.63M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+2039
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1807
+
+# sample 2026-10-14T11:27:13.066Z
+used_memory:1779168
+used_memory_human:1.70M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+2103
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1871
+
+# sample 2026-10-14T11:27:23.503Z
+used_memory:1801856
+used_memory_human:1.72M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+2166
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1934
+
+# sample 2026-10-14T11:27:33.911Z
+used_memory:1745264
+used_memory_human:1.66M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+2222
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 1990
+
+# sample 2026-10-14T11:27:44.367Z
+used_memory:1826960
+used_memory_human:1.74M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+2289
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2057
+
+# sample 2026-10-14T11:27:54.769Z
+used_memory:1749712
+used_memory_human:1.67M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+2342
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2110
+
+# sample 2026-10-14T11:28:05.150Z
+used_memory:1733320
+used_memory_human:1.65M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+2421
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2189
+
+# sample 2026-10-14T11:28:15.549Z
+used_memory:1756944
+used_memory_human:1.68M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+2493
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2261
+
+# sample 2026-10-14T11:28:25.960Z
+used_memory:1780944
+used_memory_human:1.70M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+2553
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2321
+
+# sample 2026-10-14T11:28:36.300Z
+used_memory:1741264
+used_memory_human:1.66M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+2600
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2368
+
+# sample 2026-10-14T11:28:46.639Z
+used_memory:1765496
+used_memory_human:1.68M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+2656
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2424
+
+# sample 2026-10-14T11:28:57.071Z
+used_memory:1744864
+used_memory_human:1.66M
+used_memory_rss_human:10.25M
+used_memory_peak_human:1.83M
+2707
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2475
+
+# sample 2026-10-14T11:29:07.508Z
+used_memory:1850224
+used_memory_human:1.76M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.04M
+2777
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2545
+
+# sample 2026-10-14T11:29:17.880Z
+used_memory:1791832
+used_memory_human:1.71M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.04M
+2845
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2613
+
+# sample 2026-10-14T11:29:28.263Z
+used_memory:1762040
+used_memory_human:1.68M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+2904
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2672
+
+# sample 2026-10-14T11:29:38.638Z
+used_memory:1741448
+used_memory_human:1.66M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+2966
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2734
+
+# sample 2026-10-14T11:29:49.174Z
+used_memory:1786192
+used_memory_human:1.70M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3029
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2797
+
+# sample 2026-10-14T11:29:59.593Z
+used_memory:1812280
+used_memory_human:1.73M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3084
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2852
+
+# sample 2026-10-14T11:30:10.044Z
+used_memory:1831552
+used_memory_human:1.75M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3141
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2909
+
+# sample 2026-10-14T11:30:20.456Z
+used_memory:1773608
+used_memory_human:1.69M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3204
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 2972
+
+# sample 2026-10-14T11:30:30.816Z
+used_memory:1798912
+used_memory_human:1.72M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3261
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 3029
+
+# sample 2026-10-14T11:30:41.183Z
+used_memory:1804088
+used_memory_human:1.72M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3335
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 3103
+
+# sample 2026-10-14T11:30:51.655Z
+used_memory:1904976
+used_memory_human:1.82M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3374
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 3142
+
+# sample 2026-10-14T11:31:02.073Z
+used_memory:1808648
+used_memory_human:1.72M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3445
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 3213
+
+# sample 2026-10-14T11:31:12.503Z
+used_memory:1811080
+used_memory_human:1.73M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3514
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 3282
+
+# sample 2026-10-14T11:31:22.984Z
+used_memory:1832768
+used_memory_human:1.75M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3559
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 3327
+
+# sample 2026-10-14T11:31:33.369Z
+used_memory:1794872
+used_memory_human:1.71M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3639
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 3407
+
+# sample 2026-10-14T11:31:43.734Z
+used_memory:1629256
+used_memory_human:1.55M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 3409
+
+# sample 2026-10-14T11:31:54.188Z
+used_memory:1629256
+used_memory_human:1.55M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 3409
+
+# sample 2026-10-14T11:32:04.640Z
+used_memory:1629256
+used_memory_human:1.55M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 1 pending 12 last-delivered-id 1792083829270-0 entries-read 232 lag 3409
+
+# sample 2026-10-14T11:32:15.233Z
+used_memory:1672000
+used_memory_human:1.59M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 2 pending 24 last-delivered-id 1792083890121-0 entries-read 626 lag 3015
+
+# sample 2026-10-14T11:32:25.573Z
+used_memory:1725080
+used_memory_human:1.65M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 2 pending 24 last-delivered-id 1792084097972-0 entries-read 1815 lag 1826
+
+# sample 2026-10-14T11:32:35.977Z
+used_memory:1704560
+used_memory_human:1.63M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 2 pending 24 last-delivered-id 1792084286724-0 entries-read 2954 lag 687
+
+# sample 2026-10-14T11:32:46.331Z
+used_memory:1662688
+used_memory_human:1.59M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 2 pending 12 last-delivered-id 1792084403297-0 entries-read 3641 lag 0
+
+# sample 2026-10-14T11:32:56.846Z
+used_memory:1662688
+used_memory_human:1.59M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 2 pending 12 last-delivered-id 1792084403297-0 entries-read 3641 lag 0
+
+# sample 2026-10-14T11:33:07.240Z
+used_memory:1662688
+used_memory_human:1.59M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 2 pending 12 last-delivered-id 1792084403297-0 entries-read 3641 lag 0
+
+# sample 2026-10-14T11:33:17.605Z
+used_memory:1662688
+used_memory_human:1.59M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 2 pending 12 last-delivered-id 1792084403297-0 entries-read 3641 lag 0
+
+# sample 2026-10-14T11:33:28.071Z
+used_memory:1662688
+used_memory_human:1.59M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 2 pending 12 last-delivered-id 1792084403297-0 entries-read 3641 lag 0
+
+# sample 2026-10-14T11:33:38.598Z
+used_memory:1662688
+used_memory_human:1.59M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 2 pending 12 last-delivered-id 1792084403297-0 entries-read 3641 lag 0
+
+# sample 2026-10-14T11:33:49.014Z
+used_memory:1649152
+used_memory_human:1.57M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 3 pending 0 last-delivered-id 1792084403297-0 entries-read 3641 lag 0
+
+# sample 2026-10-14T11:33:59.382Z
+used_memory:1649152
+used_memory_human:1.57M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 3 pending 0 last-delivered-id 1792084403297-0 entries-read 3641 lag 0
+
+# sample 2026-10-14T11:34:09.804Z
+used_memory:1649152
+used_memory_human:1.57M
+used_memory_rss_human:10.25M
+used_memory_peak_human:2.07M
+3641
+name workers consumers 3 pending 0 last-delivered-id 1792084403297-0 entries-read 3641 lag 0
 
