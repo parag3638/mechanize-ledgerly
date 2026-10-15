@@ -48,11 +48,11 @@ def components(result: dict[str, Any], rubric: dict[str, Any]) -> dict[str, Any]
             if cid.startswith("hidden."):
                 checks[cid] = 0.0
     # A fix that needs no schema change is fine: full marks for the migration check when there is
-    # no new revision but the idempotency fix demonstrably works.
+    # no new revision but the idempotency fix demonstrably works (even for a slow first request).
     evidence = _get(result, "static", "evidence", default={}) or {}
     if (
         not evidence.get("new_revisions")
-        and checks.get("hidden.idempotency_concurrent", 0.0) == 1.0
+        and checks.get("hidden.idempotency_slow_first", 0.0) == 1.0
     ):
         checks["static.new_revision_nonlocking"] = 1.0
     rubric_score = rubric.get("score")
