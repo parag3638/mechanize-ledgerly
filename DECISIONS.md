@@ -19,6 +19,8 @@ Chosen:
 
 **Calibration finding: TTL 500 ms, not 1000.** At 1000 ms the outage capture produced zero duplicates (and so did a 2-minute outage slice). A first request only survives if it waits less than the API's 2 s statement timeout, and during the outage, rows are held either briefly or indefinitely. At 500 ms with 40% hedged requests, the slice produced 4 duplicates per 1,716 keys (0 at 1000 ms), so the baseline uses TTL 500 and `--double-share 0.4`. The docstring's rationale ("creating a charge takes a few milliseconds") still holds. The hidden tests hold the first request for 3 s, so they don't depend on the TTL.
 
+**Duplicate count: 2, not the planned 10–60.** Under this mechanism a duplicate needs a first request that waits longer than the TTL but finishes inside the API's 2 s statement timeout. During bug 1's collapse, rows are held either briefly or indefinitely, so this is rare: 1 duplicate at 1.5× load with 40% hedging, and 2 at the incident load (1×, 10 req/s) with 60% hedging. The capture at 1× is kept: the hidden 1× replay is "the load that triggered the incident", so it is also more consistent. Both duplicates succeeded at Paystream, at 11:21 and 11:28, and the log shows `waited_ms` ≈ 500 for each, the fingerprint of an expired lock. What's lost is the refund-count trap (rows ≠ keys). The bug's grading doesn't depend on the count: the hidden tests and the gate catch it deterministically.
+
 ## 2026-10-15 — P7 published
 
 Proposed: repo name (ledgerly-incident / ledgerly-sre-eval / mechanize-ledgerly), visibility, and whether to publish the log viewer and QA report on Pages.
