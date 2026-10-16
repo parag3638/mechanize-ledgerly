@@ -4,6 +4,8 @@ One hard, realistic eval task: a coding agent debugs a production incident in a 
 
 This file is the single reference for the whole project. Phase 0 copies it into the repo as `PROJECT.md`; after that the repo copy is the source of truth and `DECISIONS.md` records every proposal → choice → why.
 
+> **v2 (2026-10-16) supersedes parts of this plan.** It replaces bug 2 (§5.1 `api/charges.py`): idempotency is now a Redis lock whose 500 ms TTL is shorter than a slow request, not check-then-insert. It also changes the hidden-test weights and gates (§6.2), the CONTRIBUTING sentences quoted in §6.2, and the probe list (§8). Current design: `docs/plans/2026-10-15-v2-difficulty.md`. Current weights and sources: `task/grader/checks.py`. Why: `DECISIONS.md`. v1 is tagged `v1-published`.
+
 ---
 
 ## 0. Context
