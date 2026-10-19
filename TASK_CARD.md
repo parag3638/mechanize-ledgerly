@@ -56,7 +56,7 @@ Codex CLI on `gpt-5.5-2026-04-23`, one valid run per version (details in `FAILUR
 | Version | Score | Agent time | What decided it |
 |---|---|---|---|
 | v1 | 0.705 | 7.4 min | Docs named both mechanisms; the 3M-token cap cut it off before refunds and the postmortem |
-| v2 | 0.940 | 13.5 min | Found both bugs by code review from its own best-practice priors; finished every deliverable |
+| v2 | 0.940 | 6.9 min | Found both bugs by code review from its own best-practice priors; finished every deliverable |
 
 - **Missed in both runs:** retry backoff, jitter and budget (−0.06).
 - **v2 is still easier than intended for this agent.** To be hard, a planted fault has to look correct under standard practice and be findable only empirically. FAILURE_MODES lists candidates.

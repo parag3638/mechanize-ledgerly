@@ -8,10 +8,10 @@
 |---|---|---|---|---|---|---|
 | 1 | v1 | 1M | 4 min | 84k / 970k / 16k | 0.175 | **Invalid**: environment bug (below); log kept in `runs/logs/agents-invalid/` |
 | 2 | v1 | 3M | 7.4 min | 132k / 2.94M / 18k | **0.705** | Valid; stopped by the token cap |
-| 3 | v2 | 6M | 13.5 min | 113k / 1.90M / 20k | **0.940** (logged 0.923) | Valid; finished on its own |
+| 3 | v2 | 6M | 6.9 min | 113k / 1.90M / 20k | **0.940** (logged 0.923) | Valid; finished on its own |
 
 - **Setup:** all runs used Codex CLI 0.162.1 with `gpt-5.5-2026-04-23`.
-- **Agent time:** from the first to the last model call; grading took another ~6 minutes per run.
+- **Agent time:** from the agent's first to its last model call, excluding the rubric's calls during scoring. Grading took another ~6 minutes per run. Token totals include the rubric's three calls, a few thousand tokens.
 - **Tokens:** about 95% are cached re-reads of the growing context.
 - **Run 3's score:** the run logged 0.923. The difference is a grader bug the run exposed (below); 0.940 is the score after the fix, recomputed from the run's saved grading.
 

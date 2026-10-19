@@ -1,15 +1,35 @@
 # Ledgerly Incident
 
-A realistic task for coding agents: take over a production incident in a payments service, find out why it falls over under load and why customers were charged twice, fix it without breaking production rules, clean up the damage, and write the postmortem. It comes with a grader that is deterministic, fair, knowable and hard to game, a QA kit that proves those properties, and a failure-mode report from a frontier-agent run. The task was built to be hard; the first frontier run showed it isn't hard enough yet, and why (see Results).
+An RL-style task for coding agents: take over a live payments incident, find why the service collapses under load and charges some customers twice, fix it within production rules, refund the damage, and write the postmortem. It ships with a grader that gives a number, and a QA kit that proves the grader's properties rather than asserting them.
 
 Independent portfolio work in the style of Mechanize's public writing; not affiliated with Mechanize.
 
+## At a glance
+
+| | |
+|---|---|
+| **Grader QA** | 7 of 7 checks pass: deterministic (5 identical gradings); fair to two different correct fixes (both 1.0); 15 reward hacks all under 0.3 (max 0.08); every graded behaviour traceable to the agent's docs (47 of 47) |
+| **Frontier agent** (Codex CLI, `gpt-5.5`) | v1: **0.705**. v2: **0.940**, about 7 minutes of agent time each |
+| **Main finding** | Removing every hint from the docs didn't make the task hard. The agent found a planted latent race by code review, from its own engineering priors. To be hard, a fault must look correct and be findable only by measurement |
+| **Honest misses** | The target (agents below 50%) isn't met; two valid runs, not ten; the incident has only 2 duplicate charges |
+
+**Read next:**
+- [`docs/essay-two-rounds.md`](docs/essay-two-rounds.md): the story and the lesson, in 5 minutes.
+- [`FAILURE_MODES.md`](FAILURE_MODES.md): the runs in detail.
+- [`TASK_CARD.md`](TASK_CARD.md): task and grading.
+- [QA report](https://parag3638.github.io/mechanize-ledgerly/qa/report.html).
+- [Transcripts in the Inspect log viewer](https://parag3638.github.io/mechanize-ledgerly/).
+
+![QA report: 7 of 7 checks pass](docs/img/qa-report.png)
+
+![The v2 agent run in the Inspect log viewer (logged 0.923; 0.940 after the grader fix described in FAILURE_MODES.md)](docs/img/log-viewer-v2.png)
+
 ## What it tests
 
-Debugging distributed systems under production load is still a weak spot for coding agents. This task needs several things at once:
+This task needs several things at once:
 
 - reproducing a fault that only appears under load, from logs, metrics and a load generator;
-- finding **two interacting root causes**: unbounded retries inside a database transaction, and check-then-insert idempotency; the first hides the second;
+- finding **two interacting root causes**: unbounded retries inside a database transaction, and an idempotency lock in Redis that expires while a slow request is still running. The first triggers the second, and once the first is fixed the load test no longer shows the second;
 - ignoring a convincing red herring (Redis memory);
 - fixing it the way the repo and production allow: shared modules, new migrations that don't lock busy tables, no database restart during business hours, which the agent learns by asking a simulated on-call;
 - refunding the duplicate charges already in the database through the API, after approval, without deleting anything;
@@ -57,7 +77,18 @@ To poke at the system yourself: `make dev-up`, then `make loadtest` (reproduces 
 **Frontier runs** (`FAILURE_MODES.md`, [transcripts in the Inspect log viewer](https://parag3638.github.io/mechanize-ledgerly/)). Codex CLI on `gpt-5.5`, one valid run per version:
 
 - **v1: 0.705.** It fixed both bugs in 7.4 minutes, then hit its token cap before refunds and the postmortem. The docs that made every check knowable also named both mechanisms.
-- **v2: 0.940.** The docs no longer name either mechanism, and bug 2 is a latent Redis-lock race that the load test can't show. The agent found both bugs anyway, by code review, from its own engineering priors ("a Redis TTL cannot decide money semantics"). It finished every deliverable in 13.5 minutes.
+- **v2: 0.940.** The docs no longer name either mechanism, and bug 2 is a latent Redis-lock race that the load test can't show. The agent found both bugs anyway, by code review, from its own engineering priors ("a Redis TTL cannot decide money semantics"). It finished every deliverable in 6.9 minutes of agent time.
 - **The same miss both times:** the written retry policy (backoff, jitter, budget), which nothing in its own testing exercised.
 - **Lesson for task design:** a fault that violates a well-known practice is visible to an agent that knows the practice, wherever the docs stand. To be hard, a fault must look correct and only be findable by measurement.
 - **Harness bugs:** each real run also exposed one that the QA kit had missed; both are fixed.
+
+## How this was built
+
+With an AI coding assistant (Claude Code), using a small team setup that is committed on purpose so the process is reviewable:
+- `CLAUDE.md`: the working rules.
+- `.claude/agents/architect.md`: plans each change.
+- `.claude/agents/tester.md`: verifies each change independently.
+- `BACKEND.md`: engineering rules.
+
+The kit is generic and some of its sections refer to a frontend that this project doesn't have. `DECISIONS.md` records every proposal, the choice made and why, including the mistakes and their fixes. `docs/plans/` holds the approved plans.
+

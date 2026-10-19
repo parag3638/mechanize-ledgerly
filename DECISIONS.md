@@ -5,7 +5,7 @@ What was proposed, what the owner chose, and why. Newest first. The full design 
 ## 2026-10-19 — v2 pilot: 0.940; rubric accepts the count as a word; findings written up
 
 Run: Codex CLI 0.162.1, `gpt-5.5-2026-04-23`, one epoch, `--token-limit 6000000` (owner-approved).
-- Used 2.03M tokens (113k fresh input, 1.90M cached, 20k output) and 13.5 minutes of agent time, and finished on its own.
+- Used 2.03M tokens (113k fresh input, 1.90M cached, 20k output) and 6.9 minutes of agent time, and finished on its own. (13.5 minutes was reported at first; that span wrongly included the rubric's model calls made during scoring. Corrected the same day.)
 - Logged 0.923, all gates passed.
 - Found bug 2 by reading `idempotency.py` and applying its own principle ("a Redis TTL cannot decide money semantics"), not from the incident logs.
 - Missed retry backoff, jitter and budget, as in v1.
