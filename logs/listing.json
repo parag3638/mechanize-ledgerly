@@ -1,4 +1,22 @@
 {
+  "2026-10-19T07-42-05-00-00_ledgerly-incident_njLfHeujCCBzRJWC8qz65G.eval": {
+    "eval_id": "EDXM56FMtPuM6wZ8J7aoBZ",
+    "run_id": "S2SuisiDM8JhGpXVsFxK5K",
+    "task": "ledgerly_incident",
+    "task_id": "njLfHeujCCBzRJWC8qz65G",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "invalidated": false,
+    "model": "openai/gpt-5.5-2026-04-23",
+    "started_at": "2026-10-19T07:42:05+00:00",
+    "completed_at": "2026-10-19T07:57:16+00:00",
+    "primary_metric": {
+      "name": "mean",
+      "value": 0.9233,
+      "params": {}
+    }
+  },
   "2026-10-15T12-53-06-00-00_ledgerly-incident_kgUCFEqEWWMsi3HHUpFqTZ.eval": {
     "eval_id": "B4B569KNkLXpvBMfsqXcvt",
     "run_id": "NEed6SihZQme8uUeT9q7Tm",
