@@ -51,7 +51,15 @@ See `QA_REPORT.md`: determinism, sanity bands, reward-hack probes, fairness acro
 
 ## Frontier agent results
 
-One valid run (Codex CLI on `gpt-5.5-2026-04-23`, 3M-token cap): **0.705**. In 7.4 minutes of agent time it fixed both bugs (perfect 1× and 2× replay, all gates passed), with non-locking migration, tests and on-call consulted. It missed retry backoff, jitter and budget, and the cap stopped it before refunds, CHANGELOG and postmortem. The docs that make every check knowable also name both mechanisms, so the task is easier than intended for this agent. Details and fixes in `FAILURE_MODES.md`.
+Codex CLI on `gpt-5.5-2026-04-23`, one valid run per version (details in `FAILURE_MODES.md`):
+
+| Version | Score | Agent time | What decided it |
+|---|---|---|---|
+| v1 | 0.705 | 7.4 min | Docs named both mechanisms; the 3M-token cap cut it off before refunds and the postmortem |
+| v2 | 0.940 | 13.5 min | Found both bugs by code review from its own best-practice priors; finished every deliverable |
+
+- **Missed in both runs:** retry backoff, jitter and budget (−0.06).
+- **v2 is still easier than intended for this agent.** To be hard, a planted fault has to look correct under standard practice and be findable only empirically. FAILURE_MODES lists candidates.
 
 ## Known limitations
 

@@ -2,6 +2,18 @@
 
 What was proposed, what the owner chose, and why. Newest first. The full design these refer to is in `PROJECT.md`.
 
+## 2026-10-19 — v2 pilot: 0.940; rubric accepts the count as a word; findings written up
+
+Run: Codex CLI 0.162.1, `gpt-5.5-2026-04-23`, one epoch, `--token-limit 6000000` (owner-approved).
+- Used 2.03M tokens (113k fresh input, 1.90M cached, 20k output) and 13.5 minutes of agent time, and finished on its own.
+- Logged 0.923, all gates passed.
+- Found bug 2 by reading `idempotency.py` and applying its own principle ("a Redis TTL cannot decide money semantics"), not from the incident logs.
+- Missed retry backoff, jitter and budget, as in v1.
+
+**Grader bug the run exposed.** The rubric judged the duplicate count met in all three votes ("Two duplicate captures were refunded"), but the C3 evidence check only accepted the digit. Chosen: accept the number as digits or a word (`quote_pattern`, with a regression test). The run re-scores to 0.940 from its saved grading; QA results are unaffected, since the fixture postmortems use digits.
+
+**Not changed: the difficulty target.** v2 is still easier than intended for this agent. The plan's target (agents below 50%) is not met and the write-up says so. FAILURE_MODES.md gives the lesson and v3 candidates: faults that look correct under standard practice and can only be found by measurement. Publishing proceeds as the owner chose.
+
 ## 2026-10-15 — v2: make the task hard, keep it fair (plan in docs/plans/2026-10-15-v2-difficulty.md)
 
 Proposed by the architect after v1's frontier run, approved by the owner.

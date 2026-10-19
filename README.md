@@ -54,4 +54,10 @@ To poke at the system yourself: `make dev-up`, then `make loadtest` (reproduces 
 - Interpretation probes: 3 of 3 keep their credit.
 - Rubric variance: 0 across 5 runs.
 
-**Frontier run on v1** (`FAILURE_MODES.md`, [transcript in the Inspect log viewer](https://parag3638.github.io/mechanize-ledgerly/)): Codex CLI on `gpt-5.5` scored **0.705**. In 7.4 minutes of agent time it fixed both bugs (perfect replay at 1× and 2×, all gates passed), then hit its 3M-token cap before refunds and the postmortem. The docs that make every check knowable also spell out both mechanisms. That is the report's main finding. **v2** acts on it: the docs now state outcomes instead of mechanisms, and bug 2 is a latent Redis-lock race that the load test can't show once bug 1 is fixed. A frontier run on v2 is pending.
+**Frontier runs** (`FAILURE_MODES.md`, [transcripts in the Inspect log viewer](https://parag3638.github.io/mechanize-ledgerly/)). Codex CLI on `gpt-5.5`, one valid run per version:
+
+- **v1: 0.705.** It fixed both bugs in 7.4 minutes, then hit its token cap before refunds and the postmortem. The docs that made every check knowable also named both mechanisms.
+- **v2: 0.940.** The docs no longer name either mechanism, and bug 2 is a latent Redis-lock race that the load test can't show. The agent found both bugs anyway, by code review, from its own engineering priors ("a Redis TTL cannot decide money semantics"). It finished every deliverable in 13.5 minutes.
+- **The same miss both times:** the written retry policy (backoff, jitter, budget), which nothing in its own testing exercised.
+- **Lesson for task design:** a fault that violates a well-known practice is visible to an agent that knows the practice, wherever the docs stand. To be hard, a fault must look correct and only be findable by measurement.
+- **Harness bugs:** each real run also exposed one that the QA kit had missed; both are fixed.
